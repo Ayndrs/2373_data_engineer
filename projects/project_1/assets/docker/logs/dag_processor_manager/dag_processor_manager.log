@@ -1,0 +1,5 @@
+[2026-03-30T15:19:42.101+0000] {manager.py:469} INFO - Processing files using up to 2 processes at a time 
+[2026-03-30T15:19:42.103+0000] {manager.py:470} INFO - Process each file at most once every 30 seconds
+[2026-03-30T15:19:42.104+0000] {manager.py:471} INFO - Checking for new files in /opt/airflow/dags every 300 seconds
+[2026-03-30T15:19:42.105+0000] {manager.py:738} INFO - Searching for files in /opt/airflow/dags
+[2026-03-30T15:19:42.108+0000] {manager.py:741} INFO - There are 0 files in /opt/airflow/dags
