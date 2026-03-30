@@ -4,6 +4,10 @@ Kafka Batch Consumer - Ingest to Landing Zone
 Consumes messages from Kafka for a time window and writes to landing zone as JSON.
 
 Pattern: Kafka Topic -> (This Script) -> ./data/landing/{topic}_{timestamp}.json
+
+python3 jobs/ingest_kafka_to_landing.py --topic user_events --batch_duration_sec 5 --output_path ./data/landing
+python3 jobs/ingest_kafka_to_landing.py --topic transaction_events --batch_duration_sec 5 --output_path ./data/landing
+
 """
 from kafka import KafkaConsumer
 import json
@@ -35,6 +39,7 @@ def consume_batch(topic: str, batch_duration_sec: int, output_path: str) -> int:
             value_deserializer=lambda v: json.loads(v.decode("utf-8")),
         )
     except Exception:
+        print("Running on localhost:9094")
         bootstrap_servers = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9094")
         consumer = KafkaConsumer(
             topic,
