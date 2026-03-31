@@ -24,4 +24,11 @@ def create_spark_session(
         Configured SparkSession instance
     """
     # TODO: Implement
-    pass
+    builder = SparkSession.builder.appName(app_name).master(master)
+    builder = builder.config("spark.sql.session.timeZone", "UTC")
+
+    if config_overrides:
+        for k, v in config_overrides.items():
+            builder = builder.config(str(k), str(v))
+
+    return builder.getOrCreate()
