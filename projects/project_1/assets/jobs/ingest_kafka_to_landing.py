@@ -28,7 +28,6 @@ def consume_batch(topic: str, batch_duration_sec: int, output_path: str) -> int:
     Returns:
         Number of messages consumed
     """
-    # TODO: Implement
     bootstrap_servers = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "kafka:9092")
     try:
         consumer = KafkaConsumer(
@@ -77,23 +76,10 @@ def consume_batch(topic: str, batch_duration_sec: int, output_path: str) -> int:
 
 
 if __name__ == "__main__":
-    # TODO: Parse args and call consume_batch
     parser = argparse.ArgumentParser(description="Kafka Batch Consumer - Ingest to Landing Zone")
-    parser.add_argument("--topic", required=True, type=str, help="Kafka topic to consume from")
-    parser.add_argument(
-        "--batch_duration_sec",
-        required=False,
-        type=int,
-        default=int(os.getenv("BATCH_DURATION_SEC", "30")),
-        help="How long to consume before writing",
-    )
-    parser.add_argument(
-        "--output_path",
-        required=False,
-        type=str,
-        default=os.getenv("LANDING_ZONE_PATH", "./data/landing"),
-        help="Directory to write output JSON files",
-    )
+    parser.add_argument("--topic", required=True, type=str)
+    parser.add_argument("--batch_duration_sec", required=False, type=int, default=int(os.getenv("BATCH_DURATION_SEC", "10")))
+    parser.add_argument("--output_path", required=False, type=str, default=os.getenv("LANDING_ZONE_PATH", "./data/landing"))
     args = parser.parse_args()
 
     count = consume_batch(args.topic, args.batch_duration_sec, args.output_path)

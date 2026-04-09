@@ -28,4 +28,4 @@ ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 USER airflow
 
 # Install Python dependencies for Kafka integration
-RUN pip install --no-cache-dir kafka-python pyspark==3.5.0 snowflake-connector-python apache-airflow-providers-snowflake
+RUN pip install --no-cache-dir kafka-python pyspark==3.5.0 snowflake-connector-python apache-airflow-providers-snowflake pyarrow pandas streamlit

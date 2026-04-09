@@ -1,0 +1,14 @@
+examples/
+coding_challenges/
+exercises/
+projects/project_1/data
+projects/project_1/logs
+projects/project_1/logs_partitioned
+projects/project_1/bucketed_logs
+*.crc
+*.pyc
+*.csv
+_SUCCESS
+*.json
+*.log
+*.parquet

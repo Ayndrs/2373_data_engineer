@@ -100,8 +100,8 @@ services:
       - SPARK_NO_DAEMONIZE=true
     command: [ "/opt/spark/sbin/start-master.sh" ]
     volumes:
-      - ./jobs:/opt/spark-jobs
-      - spark_data:/opt/spark-data
+      - ../jobs:/opt/spark-jobs
+      - ../data:/opt/spark-data
     depends_on:
       spark-init:
         condition: service_completed_successfully
@@ -124,8 +124,8 @@ services:
       - SPARK_NO_DAEMONIZE=true
     command: [ "/opt/spark/sbin/start-worker.sh", "spark://spark-master:7077" ]
     volumes:
-      - ./jobs:/opt/spark-jobs
-      - spark_data:/opt/spark-data
+      - ../jobs:/opt/spark-jobs
+      - ../data:/opt/spark-data
     networks:
       - streamflow-network
 
@@ -157,6 +157,8 @@ services:
     user: root
     ports:
       - "8082:8080"
+      # Streamlit (started by DAG task `streamflow` or manually: streamlit run visualization.py)
+      - "8501:8501"
     environment:
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/airflow
@@ -168,10 +170,10 @@ services:
       - _AIRFLOW_WWW_USER_USERNAME=admin
       - _AIRFLOW_WWW_USER_PASSWORD=admin
     volumes:
-      - ./dags:/opt/airflow/dags
+      - ../dags:/opt/airflow/dags
       - ./scripts:/opt/airflow/scripts
-      - ./jobs:/opt/spark-jobs
-      - ./data:/opt/spark-data
+      - ../jobs:/opt/spark-jobs
+      - ../data:/opt/spark-data
       - ./logs:/opt/airflow/logs
       - airflow_data:/opt/airflow
     command: standalone

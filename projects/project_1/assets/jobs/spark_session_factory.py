@@ -5,6 +5,7 @@ Provides factory functions for creating SparkSession instances.
 """
 from pyspark.sql import SparkSession
 from typing import Optional
+import os
 
 
 def create_spark_session(
@@ -23,9 +24,20 @@ def create_spark_session(
     Returns:
         Configured SparkSession instance
     """
-    # TODO: Implement
-    builder = SparkSession.builder.appName(app_name).master(master)
-    builder = builder.config("spark.sql.session.timeZone", "UTC")
+    master_from_env = os.getenv("SPARK_MASTER")
+    effective_master = master_from_env if master_from_env else master
+
+    builder = SparkSession.builder.appName(app_name).master(effective_master)
+
+    default_configs = {
+        "spark.sql.session.timeZone": "UTC",
+        "spark.sql.adaptive.enabled": "true",
+        "spark.sql.adaptive.coalescePartitions.enabled": "true",
+        "spark.sql.shuffle.partitions": os.getenv("SPARK_SQL_SHUFFLE_PARTITIONS", "200"),
+    }
+
+    for k, v in default_configs.items():
+        builder = builder.config(str(k), str(v))
 
     if config_overrides:
         for k, v in config_overrides.items():
