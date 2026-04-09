@@ -19,7 +19,7 @@ _JOBS_DIR = Path(__file__).resolve().parent
 if str(_JOBS_DIR) not in sys.path:
     sys.path.insert(0, str(_JOBS_DIR))
 
-import analyze_data  # noqa: E402
+import analyze_data
 
 # Gold Parquet folders live next to landing: .../project_1/assets/data/gold
 # (not project_1/data/gold — jobs/ is under assets/, so use parents[1] == assets)
@@ -36,14 +36,14 @@ def main() -> None:
     st.title("Streamlit — Gold analytics")
 
     default = os.getenv("GOLD_ZONE_PATH", str(_DEFAULT_GOLD))
-    gold_path = st.sidebar.text_input("Gold root", value=default)
+    # gold_path = st.sidebar.text_input("Gold root", value=default)
 
-    if not Path(gold_path).is_dir():
-        st.error(f"Not a directory: `{gold_path}`")
+    if not Path(default).is_dir():
+        st.error(f"Not a directory: `{default}`")
         return
 
     try:
-        result = _run_analysis(gold_path)
+        result = _run_analysis(default)
     except Exception as e:
         st.error(f"Could not load or analyze gold data: {e}")
         return
