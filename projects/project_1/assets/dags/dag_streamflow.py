@@ -35,7 +35,7 @@ with DAG(
     dag_id='streamflow_main',
     default_args=default_args,
     start_date=datetime(2024, 1, 1),
-    schedule_interval=timedelta(minutes=4),
+    schedule_interval=timedelta(minutes=2),
     catchup=False,
     sla_miss_callback=_sla_miss_callback,
     params={

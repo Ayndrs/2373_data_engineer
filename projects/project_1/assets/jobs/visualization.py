@@ -59,10 +59,13 @@ def main() -> None:
     def _product_label(p):
         if not p:
             return "—", None
+        # Prefer a human-friendly product name; fall back to the id/key if absent.
+        pname = p.get("product_name")
         pid = p.get("product_id") or "?"
         units = p.get("units_sold", 0)
         rev = p.get("revenue", 0.0)
-        return f"{pid}", f"{int(units):,} units • ${float(rev):,.2f}"
+        label = str(pname).strip() if pname is not None and str(pname).strip() else str(pid)
+        return label, f"{int(units):,} units • ${float(rev):,.2f}"
 
     most_label, most_delta = _product_label(s.get("most_sold_product"))
     least_label, least_delta = _product_label(s.get("least_sold_product"))
